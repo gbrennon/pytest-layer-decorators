@@ -1,0 +1,42 @@
+_EXEMPT_MODULE_PREFIXES = {
+    "_pytest", "abc", "argparse", "ast", "asyncio", "attrs",
+    "base64", "builtins",
+    "calendar", "collections", "concurrent", "contextlib", "contextvars",
+    "copy", "csv", "ctypes", "curses",
+    "dataclasses", "datetime", "dbm", "decimal", "difflib", "dis", "doctest",
+    "email", "encodings", "enum", "errno", "exceptiongroup",
+    "faulthandler", "filecmp", "fileinput", "fnmatch", "fractions", "functools",
+    "gc", "getopt", "getpass", "gettext", "glob", "graphlib", "grp", "gzip",
+    "hashlib", "heapq", "hmac", "html", "http",
+    "idlelib", "imaplib", "importlib", "iniconfig", "inspect", "io", "ipaddress", "itertools",
+    "json",
+    "keyword",
+    "linecache", "locale", "logging", "lzma",
+    "mailbox", "marshal", "math", "mimetypes", "mmap", "modulefinder", "multiprocessing",
+    "netrc", "nis", "nntplib", "numbers",
+    "operator", "os",
+    "packaging", "pathlib", "pdb", "pickle", "pickletools", "pkgutil", "platform",
+    "plistlib", "pluggy", "poplib", "posix", "posixpath", "pprint", "profile",
+    "pstats", "pty", "pwd", "py", "py_compile", "pyclbr", "pydoc",
+    "pytest", "pytest_layer_decorators",
+    "queue", "quopri",
+    "random", "re", "readline", "reprlib", "resource", "rlcompleter", "runpy",
+    "sched", "secrets", "select", "selectors", "shelve", "shlex", "shutil",
+    "signal", "site", "smtpd", "smtplib", "sndhdr", "socket", "socketserver",
+    "sqlite3", "ssl", "stat", "statistics", "string", "stringprep", "struct",
+    "subprocess", "sunau", "symtable", "sys", "sysconfig", "syslog",
+    "tabnanny", "tarfile", "telnetlib", "tempfile", "termios", "textwrap",
+    "threading", "time", "timeit", "tkinter", "token", "tokenize", "tomli",
+    "tomllib", "trace", "traceback", "tracemalloc", "tty", "turtle",
+    "turtledemo", "types", "typing",
+    "unicodedata", "unittest", "urllib", "uu", "uuid",
+    "venv",
+    "warnings", "wave", "weakref", "webbrowser", "wsgiref",
+    "xdrlib", "xml", "xmlrpc",
+    "zipapp", "zipfile", "zipimport", "zlib",
+}
+
+
+def is_module_exempt(module_name: str) -> bool:
+    top_level_package = module_name.partition(".")[0]
+    return top_level_package in _EXEMPT_MODULE_PREFIXES
