@@ -38,36 +38,42 @@ layer_presentation_modules =
 
 ### 2. Decorate your tests
 
+Apply the decorator directly to a test **function** or to a test **class** (the marker
+propagates to every test method inside the class).
+
 ```python
 from pytest_layer_decorators import domain, application, infrastructure, presentation
 
-# Domain tests: may NOT import from application, infrastructure, or presentation
+# ── style A: decorate individual test functions ──────────────────────
+
 @domain
 def test_entity_validation():
     from myapp.domain.models import Entity
     assert Entity("foo").name == "foo"
 
-# Application tests: may import from domain only
 @application
 def test_create_user_usecase():
     from myapp.domain.models import User
     from myapp.application.usecases import CreateUserUseCase
     ...
 
-# Infrastructure tests: may import from domain and application
-@infrastructure
-def test_database_adapter():
-    from myapp.domain.models import User
-    from myapp.application.ports import UserRepository
-    from myapp.infrastructure.db import Database
-    ...
+# ── style B: decorate a test class ───────────────────────────────────
 
-# Presentation tests: may import from domain and application
+@infrastructure
+class TestDatabaseAdapter:
+    def test_save(self):
+        from myapp.infrastructure.db import Database
+        ...
+
+    def test_query(self):
+        from myapp.infrastructure.db import Database
+        ...
+
 @presentation
-def test_api_controller():
-    from myapp.application.usecases import CreateUserUseCase
-    from myapp.presentation.api import UserController
-    ...
+class TestAPIController:
+    def test_index_route(self):
+        from myapp.presentation.api import UserController
+        ...
 ```
 
 ### 3. Run pytest
