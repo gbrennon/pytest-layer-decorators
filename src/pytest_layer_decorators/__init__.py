@@ -1,6 +1,6 @@
 """pytest-layer-decorators — reusable decorators for layer-separated test suites.
 
-Usage::
+Decorate individual test functions or whole test classes::
 
     from pytest_layer_decorators import domain, application, infrastructure, presentation
 
@@ -9,16 +9,18 @@ Usage::
         ...
 
     @application
-    def test_use_case():
-        ...
+    class TestUseCases:
+        def test_register_user(self):
+            ...
 
     @infrastructure
     def test_database_adapter():
         ...
 
     @presentation
-    def test_api_controller():
-        ...
+    class TestCLI:
+        def test_handle_command(self):
+            ...
 """
 
 from pytest_layer_decorators._decorators import (
