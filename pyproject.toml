@@ -1,17 +1,23 @@
 [project]
 name = "pytest-layer-decorators"
 version = "0.1.0"
-description = "Add your description here"
+description = "Reusable pytest decorators to enforce test separation by architectural layers"
 readme = "README.md"
 authors = [
     { name = "Glauber Brennon", email = "glauberbrennon@gmail.com" }
 ]
-requires-python = ">=3.12"
-dependencies = []
+requires-python = ">=3.14"
+dependencies = ["pytest>=7.0"]
 
-[project.scripts]
-pytest-layer-decorators = "pytest_layer_decorators:main"
+[project.entry-points.pytest11]
+pytest_layer_decorators = "pytest_layer_decorators._plugin"
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
 
 [build-system]
 requires = ["uv_build>=0.9.18,<0.10.0"]
 build-backend = "uv_build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
