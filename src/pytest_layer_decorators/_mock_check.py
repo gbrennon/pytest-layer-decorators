@@ -17,6 +17,7 @@ def detect_mocks_in_namespace(test_module: ModuleType) -> list[str]:
         mod_name = getattr(mod, "__name__", "")
         if is_module_exempt(mod_name):
             return
+
         for attr_name in dir(mod):
             try:
                 obj = getattr(mod, attr_name)
@@ -50,20 +51,16 @@ def _belongs_to_mock_library(module_name: str) -> bool:
 def load_mock_policy(pytest_config: object | None = None) -> dict[str, bool]:
     from pytest_layer_decorators._config import _DEFAULT_LAYER_NAMES, _load_raw_pyproject_config
 
-    policy: dict[str, bool] = {
+    _INI_DEFAULTS: dict[str, bool] = {
         "domain": True,
         "application": True,
-        "infrastructure": True,
-        "presentation": True,
+        "infrastructure": False,
+        "presentation": False,
     }
 
-    if pytest_config is not None and hasattr(pytest_config, "getini"):
-        for layer in policy:
-            val = _ini_bool(pytest_config, f"layer_{layer}_allow_mocks")  # type: ignore[arg-type]
-            if val is not None:
-                policy[layer] = val
-        return policy
+    policy: dict[str, bool] = dict(_INI_DEFAULTS)
 
+    # Override with pyproject.toml settings (higher priority than INI defaults)
     pyproject = _load_raw_pyproject_config()
     if pyproject:
         allow_mocks = pyproject.get("allow_mocks")
@@ -71,6 +68,13 @@ def load_mock_policy(pytest_config: object | None = None) -> dict[str, bool]:
             for layer in _DEFAULT_LAYER_NAMES:
                 if layer in allow_mocks and isinstance(allow_mocks[layer], bool):
                     policy[layer] = allow_mocks[layer]
+
+    # Override with explicit INI settings (only when user explicitly set them)
+    if pytest_config is not None and hasattr(pytest_config, "getini"):
+        for layer in policy:
+            val = _ini_bool(pytest_config, f"layer_{layer}_allow_mocks")  # type: ignore[arg-type]
+            if val is not None and val != _INI_DEFAULTS.get(layer):
+                policy[layer] = val
 
     return policy
 
