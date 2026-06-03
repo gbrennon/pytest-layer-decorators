@@ -16,11 +16,13 @@ def pytest_addoption(parser: Parser) -> None:
             type="linelist",
             default=[],
         )
+        allow_mocks_default = layer_name in ("domain", "application")
         parser.addini(
             f"layer_{layer_name}_allow_mocks",
-            f"Whether mocks are allowed in @{layer_name} tests (default: true)",
+            f"Whether mocks are allowed in @{layer_name} tests "
+            f"(default: {'true' if allow_mocks_default else 'false'})",
             type="bool",
-            default=True,
+            default=allow_mocks_default,
         )
 
 
