@@ -43,7 +43,7 @@ def _load_from_pyproject() -> dict[str, list[str]] | None:
             cfg = tool.get("pytest_layer_decorators", {})
             if isinstance(cfg, dict):
                 return {k: v for k, v in cfg.items() if isinstance(v, list)}
-            break
+            break  # pragma: no cover — unreachable in valid TOML
         if candidate.parent == candidate:
             break
         candidate = candidate.parent
@@ -97,7 +97,7 @@ def _load_raw_pyproject_config() -> dict[str, object] | None:
             cfg = tool.get("pytest_layer_decorators", {})
             if isinstance(cfg, dict):
                 return cfg
-            return None
+            return None  # pragma: no cover — unreachable in valid TOML
         if candidate.parent == candidate:
             break
         candidate = candidate.parent

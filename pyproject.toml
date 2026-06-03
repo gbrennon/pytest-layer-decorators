@@ -21,3 +21,16 @@ build-backend = "uv_build"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--cov=pytest_layer_decorators",
+    "--cov-report=term-missing",
+]
+
+
+[dependency-groups]
+dev = [
+    "pytest-cov>=7.1.0",
+]
